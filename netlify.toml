@@ -6,8 +6,9 @@
 
 [build.environment]
   NODE_VERSION = "22"
-  # Switch to "wp" (and set VITE_API_BASE) once the WordPress plugin is live.
-  VITE_API_MODE = "mock"
+  # "wp" = real data from mattacena.com; "mock" = demo data in the browser.
+  VITE_API_MODE = "wp"
+  VITE_API_BASE = "https://mattacena.com/wp-json/mattacena/v1"
 
 # Single-page app: every path serves index.html.
 [[redirects]]
