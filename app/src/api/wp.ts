@@ -17,7 +17,8 @@ export function createWpApi(base: string): Api {
     try {
       res = await fetch(base + path, {
         method,
-        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) },
+        // X-MC-Token rather than Authorization: some Apache setups (SiteGround included) strip Authorization.
+        headers: { 'Content-Type': 'application/json', ...(token ? { 'X-MC-Token': token } : {}) },
         body: body === undefined ? undefined : JSON.stringify(body),
       })
     } catch {

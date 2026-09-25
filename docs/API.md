@@ -9,7 +9,7 @@ The app's client is `app/src/api/wp.ts`; the demo implementation with the same b
 ## Rules for every endpoint
 
 - **CORS:** only `https://app.mattacena.com` (plus `http://localhost:5174` in development) may call the API.
-- **Auth:** `Authorization: Bearer <token>`. Tokens are issued by `/auth/login`, stored hashed in the database, and expire after 30 days of inactivity. `/auth/logout` revokes the token.
+- **Auth:** `X-MC-Token: <token>` header (`Authorization: Bearer` is also accepted, but SiteGround's Apache may strip it). Tokens are issued by `/auth/login`, stored hashed in the database, and expire after 30 days of inactivity. `/auth/logout` revokes the token.
 - **Roles:** checked server-side on every request, never trusted from the client.
 
   | Role | Can |
