@@ -1,0 +1,30 @@
+# app.mattacena.com — staff app (PWA). Data lives in WordPress; this site only serves the frontend.
+[build]
+  base = "app"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Switch to "wp" (and set VITE_API_BASE) once the WordPress plugin is live.
+  VITE_API_MODE = "mock"
+
+# Single-page app: every path serves index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# The service worker must never be cached, or updates would not reach the phones.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
