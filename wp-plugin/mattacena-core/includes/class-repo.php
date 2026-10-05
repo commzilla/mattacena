@@ -61,6 +61,7 @@ class MC_Repo
         }
 
         $closures = [];
+        $notes = (array) get_option('mc_closure_notes', []);
         $n = (int) get_option('nd_rst_exceptions_qnt', 0);
         for ($i = 1; $i <= $n; $i++) {
             $date = self::legacy_date((string) get_option("nd_rst_exception_date_$i", ''));
@@ -69,8 +70,8 @@ class MC_Repo
             }
             $closed = (string) get_option("nd_rst_exception_close_$i", '') === '1';
             $closures[] = $closed
-                ? ['id' => "x$i", 'date' => $date, 'type' => 'chiuso', 'note' => 'Chiuso']
-                : ['id' => "x$i", 'date' => $date, 'type' => 'orario', 'start' => substr((string) get_option("nd_rst_exception_start_$i"), 0, 5), 'end' => substr((string) get_option("nd_rst_exception_end_$i"), 0, 5), 'note' => 'Orario speciale'];
+                ? ['id' => "x$i", 'date' => $date, 'type' => 'chiuso', 'note' => ($notes[$date] ?? '') ?: 'Chiuso']
+                : ['id' => "x$i", 'date' => $date, 'type' => 'orario', 'start' => substr((string) get_option("nd_rst_exception_start_$i"), 0, 5), 'end' => substr((string) get_option("nd_rst_exception_end_$i"), 0, 5), 'note' => ($notes[$date] ?? '') ?: 'Orario speciale'];
         }
 
         $discounts = [];

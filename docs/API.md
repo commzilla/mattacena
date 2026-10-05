@@ -36,7 +36,18 @@ The app's client is `app/src/api/wp.ts`; the demo implementation with the same b
 | POST | `/bookings/{id}/status` | `{ status }` | `Booking` (also awards fidelity points on `arrivata`) |
 | DELETE | `/bookings/{id}` | — | `204` (not allowed for `cameriere`) |
 
-Still to be specified as the screens are ported: floor-plan editing (`/areas`, `/tables`), settings (`/settings`), fidelity (`/fidelity/...`) and the public endpoints used by the customer booking form.
+| PUT | `/layout` | `{ tables: [{ id, x, y, shape, rot }] }` | `{ tables }` (titolare, responsabile) |
+| POST | `/tables` | `{ area, name, seats, shape, rot, x, y }` | `{ tables, id }` |
+| PATCH | `/tables/{id}` | any of the above | `{ tables }` |
+| DELETE | `/tables/{id}` | — | `{ tables }` (removes it from upcoming bookings, keeps history) |
+| POST | `/areas` | `{ name }` | `{ areas, id }` |
+| PATCH | `/areas/{id}` | `{ name }` | `{ areas }` |
+| DELETE | `/areas/{id}` | — | `{ areas }` (409 if it still has tables or is the last one) |
+| PUT | `/settings` | any of `duration, interval, maxOnline, defaultStatus, occasions, week, closures, discounts` | `{ settings, notes }` (titolare only) |
+
+Settings are written to the legacy plugin's options, so they also apply to the public booking form. Weekly hours are synced to the form only when every open day has the same lunch and dinner hours; otherwise `notes` says so. Occasions can be renamed or added, never removed, because legacy bookings store them by position.
+
+Still to be specified: fidelity (`/fidelity/...`), team management and the public endpoints for the new customer booking form.
 
 ## Shapes
 

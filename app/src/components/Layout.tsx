@@ -11,7 +11,7 @@ export const VIEW_LABEL: Record<View, string> = {
   oggi: 'Oggi', sala: 'Sala', prenotazioni: 'Prenotazioni', calendario: 'Calendario',
   fidelity: 'Fidelity', impostazioni: 'Impostazioni', modulo: 'Modulo clienti',
 }
-const TAB_ORDER: View[] = ['oggi', 'sala', 'prenotazioni', 'fidelity']
+const TAB_ORDER: View[] = ['oggi', 'sala', 'prenotazioni', 'calendario']
 const FAB_VIEWS = ['/oggi', '/sala', '/prenotazioni', '/calendario']
 
 export function Layout({ children, onNewBooking }: { children: ReactNode; onNewBooking: () => void }) {
@@ -60,7 +60,7 @@ export function Layout({ children, onNewBooking }: { children: ReactNode; onNewB
         {tabs.map((v) => (
           <NavLink key={v} to={'/' + v} aria-current={current === v && !more ? 'page' : undefined}>
             <Icon name={v} />
-            <span>{v === 'prenotazioni' ? 'Prenotaz.' : VIEW_LABEL[v]}</span>
+            <span>{v === 'prenotazioni' ? 'Prenotaz.' : v === 'calendario' ? 'Calend.' : VIEW_LABEL[v]}</span>
             {v === 'oggi' && pending > 0 && <span className="badge">{pending}</span>}
           </NavLink>
         ))}

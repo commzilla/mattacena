@@ -5,7 +5,9 @@ import { Layout } from './components/Layout'
 import { Login } from './pages/Login'
 import { Oggi } from './pages/Oggi'
 import { Prenotazioni } from './pages/Prenotazioni'
-import { Soon } from './pages/Soon'
+import { Calendario } from './pages/Calendario'
+import { Impostazioni } from './pages/Impostazioni'
+import { Sala } from './pages/Sala'
 import { AuthProvider, useAuth } from './state/auth'
 import { DataProvider, useData } from './state/data'
 import { DrawerCtx } from './state/drawer'
@@ -23,15 +25,18 @@ function Screens() {
   const page = (v: View) => {
     if (!allowed.includes(v)) return <Navigate to="/oggi" replace />
     if (v === 'oggi') return <Oggi />
+    if (v === 'sala') return <Sala />
     if (v === 'prenotazioni') return <Prenotazioni />
-    return <Soon view={v} />
+    if (v === 'calendario') return <Calendario />
+    if (v === 'impostazioni') return <Impostazioni />
+    return <Navigate to="/oggi" replace />
   }
 
   return (
     <DrawerCtx.Provider value={open}>
       <Layout onNewBooking={() => open({ id: null })}>
         <Routes>
-          {(['oggi', 'sala', 'prenotazioni', 'calendario', 'fidelity', 'impostazioni', 'modulo'] as View[]).map((v) => (
+          {(['oggi', 'sala', 'prenotazioni', 'calendario', 'impostazioni'] as View[]).map((v) => (
             <Route key={v} path={'/' + v} element={page(v)} />
           ))}
           <Route path="*" element={<Navigate to="/oggi" replace />} />

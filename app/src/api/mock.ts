@@ -164,5 +164,26 @@ export function createMockApi(): Api {
     async updateBooking(id, patch) { await wait(); const b = find(id); Object.assign(b, patch); save(); return clone(b) },
     async setStatus(id, status) { await wait(80); const b = find(id); b.status = status; save(); return clone(b) },
     async deleteBooking(id) { await wait(); db.bookings = db.bookings.filter((b) => b.id !== id); save() },
+    async saveLayout(list) {
+      await wait(60)
+      for (const p of list) { const t = db.tables.find((x) => x.id === p.id); if (t) Object.assign(t, { x: p.x, y: p.y, shape: p.shape, rot: p.rot }) }
+      save(); return { tables: clone(db.tables) }
+    },
+    async createTable(t) { await wait(); const id = 't' + db.uid++; db.tables.push({ ...t, id }); save(); return { tables: clone(db.tables), id } },
+    async updateTable(id, patch) { await wait(); const t = db.tables.find((x) => x.id === id); if (!t) throw new ApiError('Tavolo inesistente', 404); Object.assign(t, patch); save(); return { tables: clone(db.tables) } },
+    async deleteTable(id) {
+      await wait(); db.tables = db.tables.filter((x) => x.id !== id)
+      const T = today(); db.bookings.forEach((b) => { if (b.date >= T) b.tables = b.tables.filter((x) => x !== id) })
+      save(); return { tables: clone(db.tables) }
+    },
+    async createArea(name) { await wait(); const id = 'a' + db.uid++; db.areas.push({ id, name }); save(); return { areas: clone(db.areas), id } },
+    async updateArea(id, name) { await wait(); const a = db.areas.find((x) => x.id === id); if (a) a.name = name; save(); return { areas: clone(db.areas) } },
+    async deleteArea(id) {
+      await wait()
+      if (db.tables.some((t) => t.area === id)) throw new ApiError('Prima sposta o elimina i tavoli di questa sala.', 409)
+      if (db.areas.length <= 1) throw new ApiError('Serve almeno una sala.', 409)
+      db.areas = db.areas.filter((a) => a.id !== id); save(); return { areas: clone(db.areas) }
+    },
+    async saveSettings(patch) { await wait(); db.settings = { ...db.settings, ...clone(patch) }; save(); return { settings: clone(db.settings), notes: [] } },
   }
 }

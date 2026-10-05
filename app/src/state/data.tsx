@@ -17,10 +17,18 @@ interface DataState {
   online: boolean
   date: string
   setDate: (d: string) => void
+  /** Makes sure bookings around `d` are loaded (used when browsing far months). */
+  ensureLoaded: (d: string) => void
   refresh: () => Promise<void>
   save: (id: string | null, input: BookingInput) => Promise<Booking | null>
   setStatus: (id: string, status: Status) => Promise<Booking | null>
   remove: (id: string) => Promise<boolean>
+  /** Saves only the given fields (e.g. tables) of a booking. */
+  patch: (id: string, p: Partial<BookingInput>) => Promise<Booking | null>
+  /** Replaces parts of the floor plan / settings after a successful save. */
+  mergeBoot: (p: Partial<Bootstrap>) => void
+  /** Runs a backend call; on failure shows the server's message and returns null. */
+  attempt: <T>(p: Promise<T>) => Promise<T | null>
 }
 
 const DataCtx = createContext<DataState>(null as unknown as DataState)
@@ -45,14 +53,15 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
   }, [boot])
 
-  // Widen the loaded window when the user browses far from today.
-  useEffect(() => {
+  // Move the loaded window when the user browses far from it.
+  const ensureLoaded = useCallback((d: string) => {
     const r = range.current
-    if (date < addD(r.from, 7) || date > addD(r.to, -7)) {
-      range.current = { from: addD(date, -BACK), to: addD(date, AHEAD) }
+    if (d < addD(r.from, 7) || d > addD(r.to, -7)) {
+      range.current = { from: addD(d, -BACK), to: addD(d, AHEAD) }
       refresh()
     }
-  }, [date, refresh])
+  }, [refresh])
+  useEffect(() => ensureLoaded(date), [date, ensureLoaded])
 
   useEffect(() => {
     refresh()
@@ -107,9 +116,22 @@ export function DataProvider({ children }: { children: ReactNode }) {
     } catch (e) { fail(e); return false }
   }, [])
 
+  const patch = useCallback(async (id: string, p: Partial<BookingInput>) => {
+    try {
+      const b = await api.updateBooking(id, p)
+      upsert(b)
+      return b
+    } catch (e) { return fail(e) }
+  }, [])
+
+  const mergeBoot = useCallback((p: Partial<Bootstrap>) => setBoot((b) => (b ? { ...b, ...p } : b)), [])
+  const attempt = useCallback(async <T,>(p: Promise<T>) => {
+    try { return await p } catch (e) { return fail(e) }
+  }, [])
+
   const value = useMemo(
-    () => ({ boot, bookings, error, online, date, setDate, refresh, save, setStatus, remove }),
-    [boot, bookings, error, online, date, refresh, save, setStatus, remove],
+    () => ({ boot, bookings, error, online, date, setDate, ensureLoaded, refresh, save, setStatus, remove, patch, mergeBoot, attempt }),
+    [boot, bookings, error, online, date, ensureLoaded, refresh, save, setStatus, remove, patch, mergeBoot, attempt],
   )
   return <DataCtx.Provider value={value}>{children}</DataCtx.Provider>
 }

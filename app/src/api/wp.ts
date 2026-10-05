@@ -53,5 +53,13 @@ export function createWpApi(base: string): Api {
     updateBooking: (id, patch) => call<Booking>('PATCH', '/bookings/' + encodeURIComponent(id), patch),
     setStatus: (id, status: Status) => call<Booking>('POST', `/bookings/${encodeURIComponent(id)}/status`, { status }),
     deleteBooking: (id) => call<void>('DELETE', '/bookings/' + encodeURIComponent(id)),
+    saveLayout: (tables) => call('PUT', '/layout', { tables }),
+    createTable: (t) => call('POST', '/tables', t),
+    updateTable: (id, patch) => call('PATCH', '/tables/' + encodeURIComponent(id), patch),
+    deleteTable: (id) => call('DELETE', '/tables/' + encodeURIComponent(id)),
+    createArea: (name) => call('POST', '/areas', { name }),
+    updateArea: (id, name) => call('PATCH', '/areas/' + encodeURIComponent(id), { name }),
+    deleteArea: (id) => call('DELETE', '/areas/' + encodeURIComponent(id)),
+    saveSettings: (patch) => call('PUT', '/settings', patch),
   }
 }

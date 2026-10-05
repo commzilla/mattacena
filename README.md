@@ -36,6 +36,7 @@ Netlify builds from `netlify.toml` at the repository root (base `app/`, output `
 
 - [x] App shell, login with roles, installable PWA
 - [x] Oggi (list and table timeline), Prenotazioni, booking form
-- [ ] Sala (2D floor plan), Calendario, Fidelity, Impostazioni, customer form: ready in the prototype, being ported
+- [x] Sala (2D floor plan, service view, drag-to-assign, floor-plan editing), Calendario, Impostazioni (hours, closures, discounts, booking rules)
+- [ ] Fidelity, customer booking form, team management
 - [x] WordPress plugin: logins, roles, bookings API on the existing tables
 - [ ] Plugin endpoints for floor plan, settings, fidelity, team
