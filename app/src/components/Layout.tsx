@@ -5,7 +5,7 @@ import { today } from '../lib/date'
 import { useAuth } from '../state/auth'
 import { useData } from '../state/data'
 import { ACCESS, type View } from '../state/permissions'
-import { Icon } from './ui'
+import { Icon, Logo } from './ui'
 
 export const VIEW_LABEL: Record<View, string> = {
   oggi: 'Oggi', sala: 'Sala', prenotazioni: 'Prenotazioni', calendario: 'Calendario',
@@ -32,7 +32,7 @@ export function Layout({ children, onNewBooking }: { children: ReactNode; onNewB
   return (
     <div className="app">
       <aside className="side">
-        <div className="brand"><b>Mattacena</b><small>Gestione</small></div>
+        <div className="brand"><Logo className="side-logo" /><small>Gestione</small></div>
         <nav className="nav" aria-label="Sezioni">
           {views.map((v) => (
             <NavLink key={v} to={'/' + v} aria-current={current === v ? 'page' : undefined}>

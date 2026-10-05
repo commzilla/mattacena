@@ -24,4 +24,12 @@ export const Icon = ({ name }: { name: IconName }) => (
   <span style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: PATHS[name] }} />
 )
 
-export const Pill = ({ status }: { status: Status }) => <span className={'pill ' + STATUS_CLASS[status]}>{STATUS_LABEL[status]}</span>
+/**
+ * The official Mattacena logo from mattacena.com. Drawn as a CSS mask so it takes the
+ * current text colour: cream on dark backgrounds, Mattacena red on light ones.
+ */
+export const Logo = ({ variant = 'horizontal', className = '' }: { variant?: 'horizontal' | 'emblem'; className?: string }) => (
+  <span className={`logo logo-${variant} ${className}`} role="img" aria-label="Mattacena Firenze" />
+)
+
+export const Pill =({ status }: { status: Status }) => <span className={'pill ' + STATUS_CLASS[status]}>{STATUS_LABEL[status]}</span>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { api } from '../api'
 import { DEMO_USERS } from '../api/mock'
 import { ROLE_LABEL } from '../domain/types'
+import { Logo } from '../components/ui'
 import { useAuth } from '../state/auth'
 
 // Staff reset their password through WordPress, which owns the accounts.
@@ -34,9 +35,8 @@ export function Login() {
     <div className="auth">
       <aside className="auth-brand" aria-hidden="true">
         <div className="auth-ring" />
-        <div className="auth-mark">M</div>
         <div className="auth-brand-text">
-          <b>Mattacena</b>
+          <Logo className="auth-logo" />
           <span>Cucina tradizionale toscana</span>
         </div>
         <p className="auth-brand-foot">Prenotazioni, sala e clienti in un'unica app.</p>
@@ -44,9 +44,8 @@ export function Login() {
 
       <main className="auth-main">
         <form className="auth-form" onSubmit={submit} noValidate>
-          <div className="auth-mobile-brand" aria-hidden="true">
-            <div className="auth-mark sm">M</div>
-            <b>Mattacena</b>
+          <div className="auth-mobile-brand">
+            <Logo className="auth-logo-mobile" />
           </div>
 
           <div>

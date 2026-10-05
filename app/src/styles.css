@@ -471,10 +471,7 @@ img{max-width:100%}
 .auth-brand{position:relative;overflow:hidden;background:#171412;color:#f5ead7;display:flex;flex-direction:column;justify-content:center;gap:28px;padding:56px clamp(32px,6vw,88px)}
 .auth-ring{position:absolute;right:-240px;bottom:-260px;width:560px;height:560px;border-radius:50%;border:72px solid #a42635;opacity:.9}
 .auth-ring::after{content:"";position:absolute;inset:60px;border-radius:50%;border:2px solid rgba(245,234,215,.12)}
-.auth-mark{position:relative;width:76px;height:76px;border-radius:50%;border:7px solid #a42635;display:grid;place-items:center;font-weight:800;font-size:32px;color:#f5ead7;flex:none}
-.auth-mark.sm{width:40px;height:40px;border-width:4px;font-size:17px;background:#171412}
 .auth-brand-text{position:relative;display:flex;flex-direction:column;gap:10px}
-.auth-brand-text b{font-size:clamp(34px,4.4vw,56px);font-weight:800;letter-spacing:.14em;text-transform:uppercase;line-height:1}
 .auth-brand-text span{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#c9b99f}
 .auth-brand-foot{position:relative;margin:0;max-width:30ch;font-size:15px;line-height:1.6;color:#c9b99f}
 .auth-main{display:grid;place-items:center;padding:40px 24px calc(40px + env(safe-area-inset-bottom,0px))}
@@ -514,8 +511,16 @@ img{max-width:100%}
   .auth-brand{display:none}
   .auth-main{place-items:start center;padding-top:clamp(32px,10vh,88px)}
   .auth-mobile-brand{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-  .auth-mobile-brand b{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:17px}
-  .auth-mobile-brand .auth-mark{color:#f5ead7}
-  body:has(.auth){padding-bottom:0}
+  .auth-mobile-brand   body:has(.auth){padding-bottom:0}
 }
 @media (prefers-reduced-motion:reduce){.spin{animation-duration:2s}}
+
+/* ---------- official logo (CSS mask: takes the current text colour) ---------- */
+.logo{display:block;background:currentColor;-webkit-mask:var(--logo-src) center/contain no-repeat;mask:var(--logo-src) center/contain no-repeat}
+.logo-horizontal{--logo-src:url(/brand/logo-horizontal.png);aspect-ratio:1839/426}
+.logo-emblem{--logo-src:url(/brand/emblem.png);aspect-ratio:1/1}
+.auth-logo{width:clamp(260px,30vw,420px);color:#f5ead7}
+.auth-logo-mobile{width:200px;color:var(--red)}
+.side-logo{width:150px;color:var(--side-ink)}
+.brand small{margin-top:8px}
+@media (max-width:860px){.side-logo{width:118px}}

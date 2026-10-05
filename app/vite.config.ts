@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['apple-touch-icon.png', 'brand/emblem.png', 'brand/logo-horizontal.png'],
       manifest: {
         name: 'Mattacena · Gestione',
         short_name: 'Mattacena',
@@ -15,7 +15,7 @@ export default defineConfig({
         lang: 'it',
         start_url: '/',
         display: 'standalone',
-        background_color: '#171412',
+        background_color: '#fffaf2',
         theme_color: '#171412',
         icons: [
           { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
